@@ -73,10 +73,13 @@ class App:
 
         self.menubar = Menu(master)
 
-        self.filemenu = Menu(self.menubar)
+        self.filemenu = Menu(self.menubar, tearoff = 0)
         self.menubar.add_cascade(label = "File", menu=self.filemenu)
+        self.filemenu.add_command(label="Import Data", command=self.import_compressed_savedata)
+        self.filemenu.add_command(label="Export Data", command=self.export_savedata)
+        self.filemenu.add_command(label="Exit", command=exit)
 
-        self.configmenu = Menu(self.menubar)
+        self.configmenu = Menu(self.menubar, tearoff = 0)
         self.menubar.add_cascade(label = "Configuration", menu=self.configmenu)
 
         self.menubar.add_command(label="Exit", command=exit)
@@ -165,7 +168,7 @@ class App:
 
             label_name.grid(row = 0, column = 0, padx = (10,5), pady = (17,3))
             label_path.grid(row = 1, column = 0, pady = (0,3))
-            entry_name.grid(row = 0, column = 1, padx = (0,20), pady = (0,3))
+            entry_name.grid(row = 0, column = 1, padx = (0,20), pady = (17,3))
             entry_path.grid(row = 1, column = 1, padx = (0,20), pady = (0,3))
             button_add.grid(row = 2, column = 0, padx = (10,0), pady = (7,0))
             button_cancel.grid(row = 4, column = 0, padx = (10,0), pady = (5,5))
