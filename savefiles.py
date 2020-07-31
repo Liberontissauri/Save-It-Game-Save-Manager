@@ -42,8 +42,8 @@ class Savedata():
         if self.iscompressed == True:
             raise Exception("Savedata is already compressed")
 
-        with ZipFile(self.path + "Savedata.zip","w") as zip:
-            for file in locate.get_paths_in_save(self.path):
+        with ZipFile(self.path + "\\Savedata.zip","w") as zip:
+            for file in locate.get_paths_in_save("./SaveData"):
                 zip.write(file)
         
         self.iscompressed = True

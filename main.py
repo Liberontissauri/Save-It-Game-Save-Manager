@@ -1,4 +1,6 @@
 from tkinter import *
+from tkinter import filedialog
+import savefiles
 
 class App:
     def __init__(self, master):
@@ -23,19 +25,22 @@ class App:
 
         # Beginning of the creation of the widgets
 
-        self.save_list = Listbox(self.savefiles_frame, width = 70)
+        self.save_list = Listbox(self.savefiles_frame, selectmode = SINGLE, width = 70)
         self.save_list_scrollbar = Scrollbar(self.savefiles_frame)
         self.save_list.config(yscrollcommand = self.save_list_scrollbar.set)
         self.save_list_scrollbar.config(command = self.save_list.yview)
+        self.save_list.bind('<<ListboxSelect>>',self.update_entrys)
 
-        self.button_add = Button(self.save_management, text = "Add", width = 10)
-        self.button_delete = Button(self.save_management, text = "Delete", width = 10)
+        self.button_add = Button(self.save_management, text = "Add", command = self.open_add_save_window, width = 10)
+        self.button_delete = Button(self.save_management, text = "Delete", command = self.delete_element, width = 10)
         self.entry_name = Entry(self.save_management, width = 40)
         self.entry_path = Entry(self.save_management, width = 40)
-        self.button_find = Button(self.save_management, text = "Find", width = 10)
+        self.button_update = Button(self.save_management, text = "Update", command = self.update_config, width = 10)
+        self.button_find = Button(self.save_management, text = "Find", command = self.find_openfolder_path, width = 10)
 
         self.button_send = Button(self.export_and_import_frame, text = "Send Saves", width = 10)
-        self.button_load = Button(self.export_and_import_frame, text = "Load File", width = 10)
+        self.button_load = Button(self.export_and_import_frame, text = "Import Data", command = self.import_compressed_savedata, width = 10)
+        self.button_export = Button(self.export_and_import_frame, text = "Export Data", command = self.export_savedata, width = 10)
 
         # The widgets are created
 
@@ -54,12 +59,17 @@ class App:
         self.button_delete.grid(row = 1, column = 0, sticky = W)
         self.entry_name.grid(row = 0, column = 1, padx = (10,10), sticky = W)
         self.entry_path.grid(row = 1, column = 1, padx = (10,10), sticky = W)
-        self.button_find.grid(row = 0, column = 2, sticky = W)
+        self.button_update.grid(row = 0, column = 2, sticky = W)
+        self.button_find.grid(row = 1, column = 2, sticky = W)
 
-        self.button_send.grid(row=0, pady = (0, 10))
-        self.button_load.grid(row=1)
+        self.button_send.grid(row = 0, pady = (0, 10))
+        self.button_load.grid(row = 1, pady = (0, 10))
+        self.button_export.grid(row = 2)
 
         # Layout configured
+
+
+        # Beginning of the creation of the MenuBar
 
         self.menubar = Menu(master)
 
@@ -70,8 +80,102 @@ class App:
         self.menubar.add_cascade(label = "Configuration", menu=self.configmenu)
 
         self.menubar.add_command(label="Exit", command=exit)
+
+        # MenuBar Created
+
+        self.add_save_window_is_open = False
+
+        self.update_save_list()
         
+    def update_save_list(self):
+        self.save_list.delete(0,END)
+        for name in savefiles.read_saveinfo():
+            self.save_list.insert(END, name)
+
+    def delete_element(self):
+        saveinfo = savefiles.read_saveinfo()
+        saveinfo.pop(self.save_list.get(ACTIVE))
+        savefiles.write_saveinfo(saveinfo)
+        self.update_save_list()
+
+    def update_entrys(self, evt):
+        if self.save_list.get(ANCHOR) != "":
+            self.entry_name.delete(0,END)
+            self.entry_name.insert(0,self.save_list.get(ANCHOR))
+            self.entry_path.delete(0,END)
+            self.entry_path.insert(0,savefiles.read_saveinfo()[self.save_list.get(ANCHOR)])
+            self.last_active = self.save_list.get(ANCHOR)
+
+    def find_openfolder_path(self):
+        openfolder_path = filedialog.askdirectory(initialdir = "/", title = "Select Save Folder")
+        if openfolder_path != "":
+            self.entry_path.delete(0,END)
+            self.entry_path.insert(0,openfolder_path)
         
+    def import_compressed_savedata(self):
+        savedatafolder_path = filedialog.askopenfilename(initialdir = "./", title = "Select Compressed SaveData File", filetypes = (("zip files","*.zip"),("all files","*.*")))
+        if savedatafolder_path != "":
+            savedata_file = savefiles.Savedata(savedatafolder_path)
+            savedata_file.decompress()
+        self.update_entrys("event")
+        self.update_save_list()
+
+    def export_savedata(self):
+        toexport_location = filedialog.askdirectory(initialdir = "./", title = "Select Export Location")
+        savedata_file = savefiles.Savedata(toexport_location)
+        savedata_file.compress()
+
+    def update_config(self):
+        saveinfo = savefiles.read_saveinfo()
+        saveinfo.pop(self.last_active)
+        saveinfo[self.entry_name.get()] = self.entry_path.get()
+        savefiles.write_saveinfo(saveinfo)
+        self.last_active = self.entry_name.get()
+        self.update_save_list()
+
+    def open_add_save_window(self):
+        def add_save():
+            if entry_name.get() != "" and entry_path.get() != "":
+                saveinfo = savefiles.read_saveinfo()
+                saveinfo[entry_name.get()] = entry_path.get()
+                savefiles.write_saveinfo(saveinfo)
+                self.update_save_list()
+                self.close_add_save_window()
+
+        def find_add_window_openfolder_path():
+            openfolder_path = filedialog.askdirectory(initialdir = "/", title = "Select Save Folder")
+            if openfolder_path != "":
+                entry_path.delete(0,END)
+                entry_path.insert(0,openfolder_path)
+
+        if self.add_save_window_is_open == False:
+            self.add_save_window = Toplevel(self.main_frame)
+            self.add_save_window_is_open = True
+            self.add_save_window.protocol("WM_DELETE_WINDOW",self.close_add_save_window)
+
+            label_name = Label(self.add_save_window, text = "Name")
+            label_path = Label(self.add_save_window, text = "Path")
+
+            entry_name = Entry(self.add_save_window, width = 50)
+            entry_path = Entry(self.add_save_window, width = 50)
+
+            button_add = Button(self.add_save_window, command = add_save, text = "Add", width = 6)
+            button_cancel = Button(self.add_save_window, command = self.close_add_save_window, text = "Cancel", width = 6)
+            button_find = Button(self.add_save_window, command = find_add_window_openfolder_path, text = "Find", width = 6)
+
+            label_name.grid(row = 0, column = 0, padx = (10,5), pady = (17,3))
+            label_path.grid(row = 1, column = 0, pady = (0,3))
+            entry_name.grid(row = 0, column = 1, padx = (0,20), pady = (0,3))
+            entry_path.grid(row = 1, column = 1, padx = (0,20), pady = (0,3))
+            button_add.grid(row = 2, column = 0, padx = (10,0), pady = (7,0))
+            button_cancel.grid(row = 4, column = 0, padx = (10,0), pady = (5,5))
+            button_find.grid(row = 3, column = 0, padx = (10,0), pady = (7,0))
+
+    def close_add_save_window(self):
+        self.add_save_window_is_open = False
+        self.add_save_window.destroy()
+
+
 root = Tk()
 application = App(root)
 root.title("Save It! - Game Save Manager")
