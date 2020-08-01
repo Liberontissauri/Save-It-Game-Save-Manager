@@ -23,7 +23,7 @@ A program to manage game save data.
 
 - On the cloned folder, run:
 
-> pyinstaller --onefile main.py
+> pyinstaller --onefile --noconsole main.py
 
 - The program should be on:
 
