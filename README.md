@@ -4,7 +4,7 @@ A program to manage game save data.
 ### Features
 
 - Import and export savedata;
-- Automatically copy the savedata stored in the program folder to the respective paths (Not Implemented);
+- Automatically copy the savedata stored in the program folder to the respective paths;
 - Send the savedata to google drive (Not Implemented).
 
 ![demo1]( ./img/demo1.gif)
