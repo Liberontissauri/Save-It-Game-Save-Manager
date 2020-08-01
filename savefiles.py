@@ -21,10 +21,8 @@ def copy_save_to_program_folder(save_path):
     if exists(save_path):
 
         if not exists("./SaveData/"+save_path[-(reversed_path.find("\\")):]):
-            print("got here 1")
             copytree(save_path, "./SaveData/"+save_path[-(reversed_path.find("\\")):])
         else:
-            print("got here 2")
             rmtree("./SaveData/"+save_path[-(reversed_path.find("\\")):])
             copytree(save_path, "./SaveData/"+save_path[-(reversed_path.find("\\")):])
 
