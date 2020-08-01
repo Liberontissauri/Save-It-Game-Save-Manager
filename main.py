@@ -79,12 +79,12 @@ class App:
         self.menubar.add_cascade(label = "File", menu=self.filemenu)
         self.filemenu.add_command(label="Import Data", command=self.import_compressed_savedata)
         self.filemenu.add_command(label="Export Data", command=self.export_savedata)
-        self.filemenu.add_command(label="Exit", command=exit)
+        self.filemenu.add_command(label="Exit", command=master.destroy)
 
         self.configmenu = Menu(self.menubar, tearoff = 0)
         self.menubar.add_cascade(label = "Configuration", menu=self.configmenu)
 
-        self.menubar.add_command(label="Exit", command=exit)
+        self.menubar.add_command(label="Exit", command=master.destroy)
 
         # MenuBar Created
 
