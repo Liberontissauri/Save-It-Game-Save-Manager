@@ -5,6 +5,8 @@ A program to manage game save data.
 
 - Import and export savedata;
 - Automatically copy the savedata stored in the program folder to the respective paths;
+- Create backups of the stored data in zip files;
+- Import those same files into the program from another computer;
 - Send the savedata to google drive (Not Implemented).
 
 ![demo1](https://i.imgur.com/JMP5RpF.png)
