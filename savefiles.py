@@ -1,34 +1,51 @@
-from os import mkdir, listdir
+from os import mkdir, listdir, remove
 from os.path import isdir, exists
-from shutil import copytree
+from shutil import copytree, rmtree
 import json
 from zipfile import ZipFile
 import locate
 
-class Savefile():
-    def __init__(self, name, path):
-        self.path = path
-        self.name = name
-
-        if not isdir("./SaveData"):
+def verify_initial_files():
+    if not isdir("./SaveData"):
             mkdir("./SaveData")
         
-        if not exists("./SaveData/saveinfo.json"):
-            with open("./SaveData/saveinfo.json", "w") as saveinfo:
-                saveinfo.write(json.dumps({}))
+    if not exists("./SaveData/saveinfo.json"):
+        with open("./SaveData/saveinfo.json", "w") as saveinfo:
+            saveinfo.write(json.dumps({}))
 
-        loaded_saveinfo = read_saveinfo()
-        loaded_saveinfo[self.name] = self.path
+def copy_save_to_program_folder(save_path):
+    reversed_path = ""
 
-        write_saveinfo(loaded_saveinfo)
+    for char in save_path:
+        reversed_path = char + reversed_path
+    if exists(save_path):
 
-        if not exists(self.path):
+        if not exists("./SaveData/"+save_path[-(reversed_path.find("\\")):]):
+            print("got here 1")
+            copytree(save_path, "./SaveData/"+save_path[-(reversed_path.find("\\")):])
+        else:
+            print("got here 2")
+            rmtree("./SaveData/"+save_path[-(reversed_path.find("\\")):])
+            copytree(save_path, "./SaveData/"+save_path[-(reversed_path.find("\\")):])
 
-            reversed_path = ""
+def copy_stored_save_to_game_save_location(savename):
+    saveinfo = read_saveinfo()
+    reversed_path = ""
+    savepath = saveinfo[savename]
 
-            for char in self.path:
-                reversed_path = char + reversed_path
-            copytree(self.path, "./SaveData/"+self.path[-(reversed_path.find("/")):])
+    for char in savepath:
+        reversed_path = char + reversed_path
+
+    stored_savepath = "./SaveData/" + savepath[-(reversed_path.find("\\")):]
+
+    if exists(savepath):
+        rmtree(savepath)
+    copytree(stored_savepath, savepath)
+
+def update_program_save_folder():
+    saveinfo = read_saveinfo()
+    for name in saveinfo:
+        copy_save_to_program_folder(saveinfo[name])
 
 class Savedata():
     def __init__(self, path):

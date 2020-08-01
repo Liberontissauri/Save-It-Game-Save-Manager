@@ -38,7 +38,7 @@ class App:
         self.button_update = Button(self.save_management, text = "Update", command = self.update_config, width = 10)
         self.button_find = Button(self.save_management, text = "Find", command = self.find_openfolder_path, width = 10)
 
-        self.button_send = Button(self.export_and_import_frame, text = "Send Saves", width = 10)
+        self.button_send = Button(self.export_and_import_frame, text = "Send Saves", command = self.send_files, width = 10)
         self.button_load = Button(self.export_and_import_frame, text = "Import Data", command = self.import_compressed_savedata, width = 10)
         self.button_export = Button(self.export_and_import_frame, text = "Export Data", command = self.export_savedata, width = 10)
 
@@ -87,6 +87,7 @@ class App:
         # MenuBar Created
 
         self.add_save_window_is_open = False
+        self.last_active = None
 
         self.update_save_list()
         
@@ -94,6 +95,7 @@ class App:
         self.save_list.delete(0,END)
         for name in savefiles.read_saveinfo():
             self.save_list.insert(END, name)
+        savefiles.update_program_save_folder()
 
     def delete_element(self):
         saveinfo = savefiles.read_saveinfo()
@@ -130,10 +132,12 @@ class App:
 
     def update_config(self):
         saveinfo = savefiles.read_saveinfo()
-        saveinfo.pop(self.last_active)
-        saveinfo[self.entry_name.get()] = self.entry_path.get()
-        savefiles.write_saveinfo(saveinfo)
-        self.last_active = self.entry_name.get()
+        if self.last_active != None:
+            saveinfo.pop(self.last_active)
+        if self.entry_name.get() != "":
+            saveinfo[self.entry_name.get()] = self.entry_path.get()
+            savefiles.write_saveinfo(saveinfo)
+            self.last_active = self.entry_name.get()
         self.update_save_list()
 
     def open_add_save_window(self):
@@ -177,6 +181,12 @@ class App:
     def close_add_save_window(self):
         self.add_save_window_is_open = False
         self.add_save_window.destroy()
+
+    def send_files(self):
+        saveinfo = savefiles.read_saveinfo()
+
+        for name in saveinfo:
+            savefiles.copy_stored_save_to_game_save_location(name)
 
 
 root = Tk()
