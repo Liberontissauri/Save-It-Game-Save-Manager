@@ -7,7 +7,7 @@ A program to manage game save data.
 - Automatically copy the savedata stored in the program folder to the respective paths;
 - Send the savedata to google drive (Not Implemented).
 
-![demo1]( https://i.imgur.com/JDsXj1H.gif)
+![demo1](https://i.imgur.com/JMP5RpF.png)
 
 ### Dependencies
 
