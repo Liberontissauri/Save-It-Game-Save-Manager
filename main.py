@@ -4,6 +4,8 @@ import savefiles
 
 class App:
     def __init__(self, master):
+        savefiles.verify_initial_files()
+
         # Beginning of the creation of the frames
 
         self.main_frame = Frame(master)
