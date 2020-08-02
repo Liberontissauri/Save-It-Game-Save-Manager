@@ -14,6 +14,9 @@ def verify_initial_files():
             saveinfo.write(json.dumps({}))
 
 def copy_save_to_program_folder(save_path):
+    if "%appdata%" in save_path:
+        save_path = locate.replace_appdata_with_path(save_path)
+
     reversed_path = ""
 
     for char in save_path:
@@ -31,6 +34,9 @@ def copy_stored_save_to_game_save_location(savename):
     reversed_path = ""
     savepath = saveinfo[savename]
 
+    if "%appdata%" in savepath:
+        savepath = locate.replace_appdata_with_path(savepath)
+    print(savepath)
     for char in savepath:
         reversed_path = char + reversed_path
 
