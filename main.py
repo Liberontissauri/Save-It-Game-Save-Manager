@@ -3,6 +3,7 @@ from tkinter import filedialog
 import savefiles
 from webbrowser import open_new
 import cloud
+from locate import replace_appdata_with_path
 
 class App:
     def __init__(self, master):
@@ -153,7 +154,11 @@ class App:
         def add_save():
             if entry_name.get() != "" and entry_path.get() != "":
                 saveinfo = savefiles.read_saveinfo()
-                saveinfo[entry_name.get()] = entry_path.get()
+                if "%appdata%" in entry_path.get():
+                    saveinfo[entry_name.get()] = replace_appdata_with_path(entry_path.get())
+                else:
+                    saveinfo[entry_name.get()] = entry_path.get()
+                    
                 savefiles.write_saveinfo(saveinfo)
                 self.update_save_list()
                 self.close_add_save_window()
