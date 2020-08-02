@@ -14,12 +14,16 @@ A program to manage game save data.
 ### Dependencies
 
 - Python 3;
-- The modules imported are part of the standard library;
+- dropbox;
 - pyinstaller (only if you build the program yourself).
 
 ### Building
 
-- clone the repository;
+- Install dependencies:
+
+> pip install dropbox
+
+- clone the repository:
 
 > git clone https://github.com/Liberontissauri/Save-It-Game-Save-Manager.git
 
