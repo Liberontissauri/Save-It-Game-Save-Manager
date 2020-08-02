@@ -67,6 +67,8 @@ class Savedata():
         if self.iscompressed == False:
             raise Exception("Savedata is already decompressed")
 
+        rmtree("./SaveData")
+
         with ZipFile(self.path, "r") as zip:
             zip.extractall()
 
