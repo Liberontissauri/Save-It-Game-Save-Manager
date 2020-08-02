@@ -7,7 +7,7 @@ A program to manage game save data.
 - Automatically copy the savedata stored in the program folder to the respective paths;
 - Create backups of the stored data in zip files;
 - Import those same files into the program from another computer;
-- Send the savedata to dropbox (Not Implemented).
+- Send the savedata to dropbox.
 
 ![demo1](https://i.imgur.com/JMP5RpF.png)
 
