@@ -17,10 +17,7 @@ def copy_save_to_program_folder(save_path):
     if "%appdata%" in save_path:
         save_path = locate.replace_appdata_with_path(save_path)
 
-    reversed_path = ""
-
-    for char in save_path:
-        reversed_path = char + reversed_path
+    reversed_path = reverse_string(save_path)
     if exists(save_path):
 
         if not exists("./SaveData/"+save_path[-(reversed_path.find("\\")):]):
@@ -36,15 +33,20 @@ def copy_stored_save_to_game_save_location(savename):
 
     if "%appdata%" in savepath:
         savepath = locate.replace_appdata_with_path(savepath)
-    print(savepath)
-    for char in savepath:
-        reversed_path = char + reversed_path
+
+    reversed_path = reverse_string(savepath)
 
     stored_savepath = "./SaveData/" + savepath[-(reversed_path.find("\\")):]
 
     if exists(savepath):
         rmtree(savepath)
     copytree(stored_savepath, savepath)
+
+def reverse_string(string):
+    reversed_str = ""
+    for char in string:
+        reversed_str = char + reversed_str
+    return reversed_str
 
 def update_program_save_folder():
     saveinfo = read_saveinfo()
