@@ -49,6 +49,9 @@ def get_folder_name(path):
 
 def update_program_save_folder():
     saveinfo = read_saveinfo()
+    for folder in listdir(".\\SaveData\\"):
+        if "." not in folder:
+            rmtree(".\\SaveData\\" + folder)
     for name in saveinfo:
         copy_save_to_program_folder(saveinfo[name])
 
