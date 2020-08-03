@@ -1,4 +1,6 @@
-from tkinter import *
+from tkinter import Tk, Frame, SUNKEN, RAISED, Listbox, SINGLE, Scrollbar, Button, \
+    Entry, W, LEFT, RIGHT, Menu, END, Label, ACTIVE, ANCHOR, Toplevel
+    
 from tkinter import filedialog
 import savefiles
 from webbrowser import open_new
