@@ -156,11 +156,9 @@ class App:
         def add_save():
             if entry_name.get() != "" and entry_path.get() != "":
                 saveinfo = savefiles.read_saveinfo()
-                if "%appdata%" in entry_path.get():
-                    saveinfo[entry_name.get()] = replace_appdata_with_path(entry_path.get())
-                else:
-                    saveinfo[entry_name.get()] = entry_path.get()
-                    
+
+                saveinfo[entry_name.get()] = entry_path.get()
+
                 savefiles.write_saveinfo(saveinfo)
                 self.update_save_list()
                 self.close_add_save_window()
@@ -171,7 +169,7 @@ class App:
             openfolder_path = filedialog.askdirectory(initialdir = "/", title = "Select Save Folder")
             if openfolder_path != "":
                 entry_path.delete(0,END)
-                entry_path.insert(0,openfolder_path)
+                entry_path.insert(0,openfolder_path.replace("/","\\"))
 
         if self.add_save_window_is_open == False:
             self.add_save_window = Toplevel(self.main_frame)
