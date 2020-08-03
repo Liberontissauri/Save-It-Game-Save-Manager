@@ -1,5 +1,6 @@
 from tkinter import Tk, Frame, SUNKEN, RAISED, Listbox, SINGLE, Scrollbar, Button, \
-    Entry, W, LEFT, RIGHT, Menu, END, Label, ACTIVE, ANCHOR, Toplevel, filedialog
+    Entry, W, LEFT, RIGHT, Menu, END, Label, ACTIVE, ANCHOR, Toplevel, filedialog, \
+    messagebox
     
 import savefiles
 from webbrowser import open_new
@@ -199,6 +200,9 @@ class App:
 
     def open_dropbox_window(self):
         def update_dropbox_config():
+            if entry_code.get().replace(" ", "") == "":
+                messagebox.showerror("ERROR", "You must input a code")
+                return
             cloud.setupoauth2file(entry_code.get())
 
         if self.dropbox_window_is_open == False:
