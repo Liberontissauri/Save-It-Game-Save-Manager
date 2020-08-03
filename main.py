@@ -164,6 +164,8 @@ class App:
                 savefiles.write_saveinfo(saveinfo)
                 self.update_save_list()
                 self.close_add_save_window()
+            else:
+                messagebox.showerror("Empty Entries","Both entries must be correctly filled")
 
         def find_add_window_openfolder_path():
             openfolder_path = filedialog.askdirectory(initialdir = "/", title = "Select Save Folder")
@@ -201,7 +203,7 @@ class App:
     def open_dropbox_window(self):
         def update_dropbox_config():
             if entry_code.get().replace(" ", "") == "":
-                messagebox.showerror("ERROR", "You must input a code")
+                messagebox.showerror("Empty Entries", "You must input a code")
                 return
             cloud.setupoauth2file(entry_code.get())
 
