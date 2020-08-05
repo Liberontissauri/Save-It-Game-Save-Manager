@@ -8,6 +8,7 @@ A program to manage game save data.
 - Create backups of the stored data in zip files;
 - Import those same files into the program from another computer;
 - Send the savedata to dropbox.
+- Timed updates between the local savedata (in the program), and the cloud savedata
 
 ![demo1](https://i.imgur.com/JMP5RpF.png)
 
@@ -21,7 +22,7 @@ A program to manage game save data.
 
 - Install dependencies:
 
-> pip install dropbox
+> pip install dropbox pyinstaller
 
 - clone the repository:
 
