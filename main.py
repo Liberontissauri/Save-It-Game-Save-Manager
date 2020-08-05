@@ -240,11 +240,12 @@ class App:
     def send_files_to_cloud(self):
         cloud_transfer = cloud.DataTransfer()
         cloud_transfer.sendsaves()
+        self.update_save_list()
 
     def get_files_from_cloud(self):
         cloud_transfer = cloud.DataTransfer()
         cloud_transfer.getsaves()
-
+        self.update_save_list()
 
 
 root = Tk()
