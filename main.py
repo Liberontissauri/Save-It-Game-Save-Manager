@@ -186,17 +186,20 @@ class App:
             entry_name = Entry(self.add_save_window, width = 50)
             entry_path = Entry(self.add_save_window, width = 50)
 
-            button_add = Button(self.add_save_window, command = add_save, text = "Add", width = 6)
-            button_cancel = Button(self.add_save_window, command = self.close_add_save_window, text = "Cancel", width = 6)
-            button_find = Button(self.add_save_window, command = find_add_window_openfolder_path, text = "Find", width = 6)
+            frame_buttons = Frame(self.add_save_window)
+
+            button_add = Button(frame_buttons, command = add_save, text = "Add", width = 6)
+            button_cancel = Button(frame_buttons, command = self.close_add_save_window, text = "Cancel", width = 6)
+            button_find = Button(frame_buttons, command = find_add_window_openfolder_path, text = "Find", width = 6)
 
             label_name.grid(row = 0, column = 0, padx = (10,5), pady = (17,3))
             label_path.grid(row = 1, column = 0, pady = (0,3))
             entry_name.grid(row = 0, column = 1, padx = (0,20), pady = (17,3))
             entry_path.grid(row = 1, column = 1, padx = (0,20), pady = (0,3))
-            button_add.grid(row = 2, column = 0, padx = (10,0), pady = (7,0))
-            button_cancel.grid(row = 4, column = 0, padx = (10,0), pady = (5,5))
-            button_find.grid(row = 3, column = 0, padx = (10,0), pady = (7,0))
+            frame_buttons.grid(row = 2, columnspan = 2, sticky = W)
+            button_add.grid(row = 0, column = 0, padx = (10,0), pady = (7,9))
+            button_cancel.grid(row = 0, column = 1, padx = (10,0), pady = (7,9))
+            button_find.grid(row = 0, column = 2, padx = (10,0), pady = (7,9))
 
     def close_add_save_window(self):
         self.add_save_window_is_open = False
