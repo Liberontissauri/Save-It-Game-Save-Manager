@@ -5,8 +5,9 @@ from os import remove
 from os.path import exists
 
 class DataTransfer():
-    def __init__(self, secret):
-        self.secret = secret
+    def __init__(self):
+        with open("./code.ini", "r") as file:
+            self.secret = file.read()
         self.dbx = dropbox.Dropbox(self.secret)
     
     def sendsaves(self):

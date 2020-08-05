@@ -234,15 +234,11 @@ class App:
             savefiles.copy_stored_save_to_game_save_location(name)
 
     def send_files_to_cloud(self):
-        with open("./code.ini", "r") as file:
-            code = file.read()
-        cloud_transfer = cloud.DataTransfer(code)
+        cloud_transfer = cloud.DataTransfer()
         cloud_transfer.sendsaves()
 
     def get_files_from_cloud(self):
-        with open("./code.ini", "r") as file:
-            code = file.read()
-        cloud_transfer = cloud.DataTransfer(code)
+        cloud_transfer = cloud.DataTransfer()
         cloud_transfer.getsaves()
 
 
