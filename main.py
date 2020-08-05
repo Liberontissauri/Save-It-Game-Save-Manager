@@ -102,18 +102,19 @@ class App:
         self.last_active = None
 
         self.update_save_list()
+        savefiles.update_program_save_folder()
         
     def update_save_list(self):
         self.save_list.delete(0,END)
         for name in savefiles.read_saveinfo():
             self.save_list.insert(END, name)
-        savefiles.update_program_save_folder()
 
     def delete_element(self):
         saveinfo = savefiles.read_saveinfo()
         saveinfo.pop(self.save_list.get(ACTIVE))
         savefiles.write_saveinfo(saveinfo)
         self.update_save_list()
+        savefiles.update_program_save_folder()
 
     def update_entrys(self, evt):
         if self.save_list.get(ANCHOR) != "":
@@ -136,6 +137,7 @@ class App:
             savedata_file.decompress()
         self.update_entrys("event")
         self.update_save_list()
+        savefiles.update_program_save_folder()
 
     def export_savedata(self):
         toexport_location = filedialog.askdirectory(initialdir = "./", title = "Select Export Location")
@@ -151,6 +153,7 @@ class App:
             savefiles.write_saveinfo(saveinfo)
             self.last_active = self.entry_name.get()
         self.update_save_list()
+        savefiles.update_program_save_folder()
 
     def open_add_save_window(self):
         def add_save():
@@ -161,6 +164,7 @@ class App:
 
                 savefiles.write_saveinfo(saveinfo)
                 self.update_save_list()
+                savefiles.update_program_save_folder()
                 self.close_add_save_window()
             else:
                 messagebox.showerror("Empty Entries","Both entries must be correctly filled")
