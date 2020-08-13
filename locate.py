@@ -1,5 +1,5 @@
 from os import walk, getenv
-from os.path import join
+from os.path import join, expanduser
 
 def get_paths_in_save(path_to_save): # Returns a list of paths to all the files in a save folder
     file_list = []
@@ -10,3 +10,6 @@ def get_paths_in_save(path_to_save): # Returns a list of paths to all the files 
 
 def replace_appdata_with_path(toreplace):
     return getenv("APPDATA") + toreplace[9:]
+
+def replace_home_with_path(toreplace):
+    return expanduser("~") + toreplace[1:]
