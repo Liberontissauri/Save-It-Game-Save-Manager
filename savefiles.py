@@ -16,9 +16,9 @@ def verify_initial_files():
 def copy_save_to_program_folder(save_path):
     if "%appdata%" in save_path:
         save_path = locate.replace_appdata_with_path(save_path)
-
+    if "~" in save_path[0]:
+        save_path = locate.replace_home_with_path(save_path)
     if exists(save_path):
-
         if not exists("./SaveData/" + get_folder_name(save_path)):
             copytree(save_path, "./SaveData/" + get_folder_name(save_path))
         else:
@@ -31,6 +31,8 @@ def copy_stored_save_to_game_save_location(savename):
 
     if "%appdata%" in save_path:
         save_path = locate.replace_appdata_with_path(save_path)
+    if "~" in save_path[0]:
+        save_path = locate.replace_home_with_path(save_path)
 
     stored_savepath = "./SaveData/" + get_folder_name(save_path)
 
